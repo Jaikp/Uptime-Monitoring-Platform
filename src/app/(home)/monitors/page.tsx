@@ -67,7 +67,7 @@ const page = () => {
             <div className='w-full border border-slate-600 flex flex-col gap-2 p-4 text-white rounded backdrop-blur-xl'>
 
                 {filter.map((value,index) => {
-                    return <MonitorCard key={index} url={value.url} status={value.status} id={value.id} frequency={undefined} userId={undefined} createdAt={undefined} updatedAt={undefined}/>
+                    return <MonitorCard key={index} url={value.url} status={value.status} id={value.id} frequency={value.frequency} userId={value.userId} createdAt={value.createdAt} updatedAt={value.updatedAt}/>
                 })}
 
             </div>
