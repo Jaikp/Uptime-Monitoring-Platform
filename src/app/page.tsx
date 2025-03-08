@@ -34,7 +34,7 @@ export default function Home() {
   return (
    <div className="w-screen h-screen flex mt-60 items-center flex-col gap-10 ">
       
-      <div className="flex w-full max-w-4xl h-16 items-center space-x-2">
+      <div className="flex w-full max-w-4xl h-16 items-center space-x-2 animate-out">
         <Input className="rounded-xl text-[#9290C3] text-2xl border border-[#9290C3] w-5/6 h-full" type="email" placeholder="https://example.com"/>
         <Button onClick={handleClick} className="rounded-xl font-extrabold text-lg bg-[#9290C3] text-[#070F2B] hover:bg-[#535C91] px-6 w-1/6 h-full" type="submit">MONITOR</Button>
       </div>

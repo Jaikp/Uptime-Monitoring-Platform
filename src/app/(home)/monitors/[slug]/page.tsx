@@ -1,9 +1,13 @@
 "use client";
 
+import EditMonitor from "@/components/monitor/EditMonitor";
+import { Button } from "@/components/ui/button";
+import { delMonitor } from "@/server-actions/delMonitor";
 import { getMonitorData } from "@/server-actions/getMonitorData";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { data: session, status: sessionStatus } = useSession();
@@ -21,6 +25,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   } | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const [edit, setEdit] = useState(false);
   const [time, setTime] = useState({ Days: 0, Hours: 0, Minutes: 0 });
 
   useEffect(() => {
@@ -43,7 +48,12 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
     }
 
     loadData();
-  }, [slug]); // Add slug to the dependency array
+  }, [slug,edit]); // Add slug to the dependency array
+
+  const handleDelete = async ()=>{
+    const response = await delMonitor(slug);
+    router.push("/monitors")
+  }
 
   // Redirect if unauthenticated
   if (sessionStatus === "unauthenticated") {
@@ -60,32 +70,47 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
     );
   }
 
+  if(edit){
+    return(
+        <EditMonitor id={slug} setEdit={setEdit} url={values?.url} />
+    )
+  }
+
   return (
     <div className="flex justify-center mt-10 text-white">
       <div className="max-w-[1040px] flex flex-col gap-10 w-full">
         <div className="border border-slate-500 shadow-md justify-between p-4 flex items-center">
-          <div className="flex items-center gap-5">
-            {values?.status === "UP" ? (
-              <div className="size-4 bg-green-500 rounded-full">
-                <div className="size-4 bg-green-500 rounded-full animate-ping"></div>
-              </div>
-            ) : (
-              <div className="size-4 bg-red-600 rounded-full">
-                <div className="size-4 bg-red-600 rounded-full animate-ping"></div>
-              </div>
-            )}
-            <h1>{values?.url}</h1>
-          </div>
-          {values?.status === "UP" ? (
-            <p>
-              <span className="text-md">Uptime</span>: {time.Days} Days{" "}
-              {time.Hours} Hours {time.Minutes} Minutes
-            </p>
-          ) : (
-            <p>Down</p>
-          )}
+            <div className="flex items-center gap-5">
+                {values?.status === "UP" ? (
+                <div className="size-4 bg-green-500 rounded-full">
+                    <div className="size-4 bg-green-500 rounded-full animate-ping"></div>
+                </div>
+                ) : (
+                <div className="size-4 bg-red-600 rounded-full">
+                    <div className="size-4 bg-red-600 rounded-full animate-ping"></div>
+                </div>
+                )}
+                <h1>{values?.url}</h1>
+            </div>
+            <div className="flex items-center gap-4">
+                <Button onClick={()=> setEdit(true)} className="bg-transparent border border-gray-500 hover:bg-gray-700 text-gray-300">Edit</Button>
+                
+                <button className="p-2 rounded-lg hover:bg-gray-700 transition">
+                    <Trash2 className="w-6 h-6 text-gray-400 hover:text-red-500 transition" />
+                </button>
+            </div>
         </div>
       </div>
     </div>
   );
 }
+
+
+// {values?.status === "UP" ? (
+//     <p>
+//       <span className="text-md">Uptime</span>: {time.Days} Days{" "}
+//       {time.Hours} Hours {time.Minutes} Minutes
+//     </p>
+//   ) : (
+//     <p>Down</p>
+//   )}
