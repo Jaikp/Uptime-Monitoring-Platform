@@ -6,7 +6,7 @@ import { getMonitors } from '@/server-actions/getMonitors';
 import { monitorurl } from '@/types/monitorurl';
 
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
@@ -41,11 +41,16 @@ const page = () => {
         setFilter(filterBySearch);
     }
 
-    if(session.status === "unauthenticated"){
-
-        router.push('/')
-
-    }
+    useEffect(() => {
+        if(session.status === "unauthenticated"){
+            router.push('/');
+            toast({
+                variant: "destructive",
+                title: "you are not logged in",
+                description: "login to get access"
+              })
+        }
+    }, [session.status,router])
     
   return (
     <div className='flex justify-center mt-10'>
@@ -59,7 +64,7 @@ const page = () => {
                         <input onChange={(e)=>handleChange(e)} className='border border-gray-500 bg-[#202433] rounded px-2 text-white py-1' type="text" placeholder='search' name="fname"></input>
                     </div>
                     <div>
-                        <Link href='/monitors/new'><button className='bg-[#9290C3] hover:bg-[#535C91] text-[#070F2B] py-1 px-7 rounded'>Create new</button></Link>
+                        <button onClick={()=> router.push('/monitors/new')} className='bg-[#9290C3] hover:bg-[#535C91] text-[#070F2B] py-1 px-7 rounded'>Create new</button>
                     </div>
                 </div>
             </div>

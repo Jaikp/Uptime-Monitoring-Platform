@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
+import { Providers } from "@/providers/Providers";
 
 
 
@@ -30,16 +31,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionProvider>
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Providers>
         <Navbar/>
         {children}
         <Toaster/>
+        </Providers>
       </body>
     </html>
-    </SessionProvider>
   );
 }

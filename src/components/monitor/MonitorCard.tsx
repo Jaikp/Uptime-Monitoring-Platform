@@ -1,3 +1,4 @@
+"use client"
 import { monitorurl } from '@/types/monitorurl';
 import Link from 'next/link';
 import React from 'react'

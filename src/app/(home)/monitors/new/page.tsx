@@ -1,10 +1,11 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "@/hooks/use-toast";
 
 import {
   Form,
@@ -67,12 +68,22 @@ const page = () => {
 
         setSubmitting(false);
     }
-
-    if(session.status === "unauthenticated"){
-
-        router.push('/')
-
+    if(session.status === "loading"){
+        return <div>loading</div>
     }
+
+    useEffect(() => {
+        if(session.status === "unauthenticated"){
+            router.push('/');
+            toast({
+                variant: "destructive",
+                title: "you are not logged in",
+                description: "login to get access"
+              })
+        }
+    }, [session.status,router])
+    
+    
 
 
 
