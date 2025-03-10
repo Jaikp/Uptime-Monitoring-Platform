@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npx prisma migrate dev --name Initialize the schema && prisma generate && next build",
+    "build": "npm i && npx prisma migrate dev --name Initialize the schema && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
