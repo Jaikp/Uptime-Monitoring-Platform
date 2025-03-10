@@ -1,5 +1,5 @@
 
-import { auth } from '@/utils/auth'
+import { auth } from '@/auth'
 import { SignIn } from '../auth/signin-button'
 import { SignOut } from '../auth/signout-button';
 import UserAvatar from '../UseAvatar';
