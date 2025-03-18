@@ -62,7 +62,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   }
 
   // Show loading state
-  if (loading || isLoaded) {
+  if (loading || !isLoaded) {
     return (
       <div className="w-screen h-screen flex justify-center items-center animate-pulse">
         <h1 className="text-2xl text-white">Loading...</h1>
