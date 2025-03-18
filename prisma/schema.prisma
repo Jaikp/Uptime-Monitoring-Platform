@@ -26,7 +26,7 @@ model Monitor {
   url           String          @unique
   status        String          @default("UP")
   frequency     Int             @default(3)
-  user          User      @relation(fields: [userId], references: [id])
+  user          User      @relation(fields: [userId], references: [userId])
   userId        String
   alerts      Alert[]   // One-to-many relationship with alerts
   createdAt   DateTime  @default(now())
@@ -38,6 +38,6 @@ model Alert {
   sentAt      DateTime  @default(now())
   monitor     Monitor   @relation(fields: [monitorId], references: [id])
   monitorId   String
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [userId])
   userId      String
 }
