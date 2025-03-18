@@ -56,7 +56,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   }
 
   // Redirect if unauthenticated
-  if (isSignedIn) {
+  if (!isSignedIn) {
     router.push("/");
     return null; // Stop rendering after redirect
   }
