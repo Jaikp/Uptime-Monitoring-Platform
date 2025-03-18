@@ -25,9 +25,9 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { setMonitorData } from '@/server-actions/setMonitorData'
 import { getMonitorData } from '@/server-actions/getMonitorData'
+import { useAuth } from '@clerk/nextjs'
   
 
 const formSchema = z.object({
@@ -47,7 +47,7 @@ const formSchema = z.object({
 function EditMonitor({id  , setEdit, url} : {id : string, setEdit : any, url: any}) {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
-    const session = useSession();
+    const { isLoaded,isSignedIn } = useAuth();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -69,7 +69,7 @@ function EditMonitor({id  , setEdit, url} : {id : string, setEdit : any, url: an
 
         setSubmitting(false);
     }
-    if(session.status === "loading"){
+    if(!isLoaded){
         return <div>loading</div>
     }
 

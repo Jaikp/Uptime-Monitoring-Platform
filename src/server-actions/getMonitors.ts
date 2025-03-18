@@ -1,13 +1,14 @@
 "use server"
 import prisma from "@/db/prisma";
-import { auth } from "@/auth";
+import { auth } from "@clerk/nextjs/server";
+
 
 export async function getMonitors() {
 
-    const session = await auth();
+    const {userId} = await auth();
     const response = await prisma.monitor.findMany({
         where : {
-            userId : session?.user?.id || ""
+            userId : userId || ""
         }
     })
     return response;

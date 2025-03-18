@@ -1,6 +1,5 @@
 "use server"
 import prisma from "@/db/prisma";
-import { auth } from "@/auth";
 
 export async function getMonitorData(id : any) {
 
