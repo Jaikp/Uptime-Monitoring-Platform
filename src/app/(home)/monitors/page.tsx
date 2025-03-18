@@ -4,8 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { getMonitors } from '@/server-actions/getMonitors';
 
 import { monitorurl } from '@/types/monitorurl';
-
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@clerk/nextjs';
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -14,8 +13,7 @@ const page = () => {
     
     const [values, setValues] = useState<monitorurl[]>([]);
     const [filter, setFilter] = useState<monitorurl[]>([]);
-
-    const session = useSession();
+    const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
     const { toast } = useToast();
     const router = useRouter()
     useEffect(() => {
@@ -42,7 +40,7 @@ const page = () => {
     }
 
     useEffect(() => {
-        if(session.status === "unauthenticated"){
+        if(!isSignedIn){
             router.push('/');
             toast({
                 variant: "destructive",
@@ -50,14 +48,14 @@ const page = () => {
                 description: "login to get access"
               })
         }
-    }, [session.status,router])
+    }, [isSignedIn])
     
   return (
     <div className='flex justify-center mt-10'>
         <div className='max-w-[1040px] flex flex-col gap-10'>
             <div className='flex justify-between gap-52'>
                 <div>
-                    <h1 className='text-white text-3xl'>How is it going, {session.data?.user?.name?.split(" ")[0]}?</h1>
+                    <h1 className='text-white text-3xl'>How is it going, {}?</h1>
                 </div>
                 <div className='flex gap-4 items-center'>
                     <div>

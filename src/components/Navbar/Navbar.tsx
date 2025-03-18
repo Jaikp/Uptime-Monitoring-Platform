@@ -1,12 +1,8 @@
 
-import { auth } from '@/auth'
-import { SignIn } from '../auth/signin-button'
-import { SignOut } from '../auth/signout-button';
-import UserAvatar from '../UseAvatar';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 
 const Navbar = async () => {
-    const session = await auth();
   return (
     <div className='px-10 py-4 flex justify-between items-center '>
         <div className='text-white text-2xl'>
@@ -17,12 +13,13 @@ const Navbar = async () => {
             <Link className='hover:text-slate-400' href='/monitors'>Monitor</Link>
         </div>
         <div>
-            {session?.user ? 
-            <div className='flex gap-5'>
-                <SignOut/>
-                <UserAvatar/>
-            </div> 
-            :<SignIn/>}
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
         </div>
     </div>
   )

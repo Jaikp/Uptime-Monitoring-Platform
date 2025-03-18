@@ -4,13 +4,13 @@ import EditMonitor from "@/components/monitor/EditMonitor";
 import { Button } from "@/components/ui/button";
 import { delMonitor } from "@/server-actions/delMonitor";
 import { getMonitorData } from "@/server-actions/getMonitorData";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { data: session, status: sessionStatus } = useSession();
+  const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
   const router = useRouter();
   const { slug } = React.use(params); // Unwrap the params Promise
 
@@ -56,13 +56,13 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   }
 
   // Redirect if unauthenticated
-  if (sessionStatus === "unauthenticated") {
+  if (isSignedIn) {
     router.push("/");
     return null; // Stop rendering after redirect
   }
 
   // Show loading state
-  if (loading || sessionStatus === "loading") {
+  if (loading || isLoaded) {
     return (
       <div className="w-screen h-screen flex justify-center items-center animate-pulse">
         <h1 className="text-2xl text-white">Loading...</h1>

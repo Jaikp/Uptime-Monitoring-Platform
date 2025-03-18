@@ -26,7 +26,7 @@ import {
   } from "@/components/ui/select"
 import { useRouter } from 'next/navigation'
 import { storeData } from '@/server-actions/storeData'
-import { useSession } from 'next-auth/react'
+import { useAuth } from '@clerk/nextjs'
   
 
 const formSchema = z.object({
@@ -46,7 +46,7 @@ const formSchema = z.object({
 const page = () => {
     const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
-    const session = useSession();
+    const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -68,12 +68,12 @@ const page = () => {
 
         setSubmitting(false);
     }
-    if(session.status === "loading"){
+    if(!isLoaded){
         return <div>loading</div>
     }
 
     useEffect(() => {
-        if(session.status === "unauthenticated"){
+        if(!isSignedIn){
             router.push('/');
             toast({
                 variant: "destructive",
@@ -81,7 +81,7 @@ const page = () => {
                 description: "login to get access"
               })
         }
-    }, [session.status,router])
+    }, [isSignedIn])
     
     
 

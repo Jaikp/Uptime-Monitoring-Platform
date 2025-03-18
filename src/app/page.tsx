@@ -2,19 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 
 export default function Home() {
 
-  const session = useSession();
+  const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
   const router = useRouter();
-  if(session.status === "loading"){
+  if(!isLoaded){
     return <div>loading</div>
   }
   const handleClick = ()=>{
-    if(session.status === "authenticated"){
+    if(isSignedIn){
       toast({
         variant : "default",
         title: "created",
