@@ -57,7 +57,7 @@ const Page = () => {
             />
             <Button 
               onClick={() => router.push('/monitors/new')} 
-              className="bg-[#6366F1] hover:bg-[#4F46E5] text-white font-medium py-2 px-6 rounded-lg shadow-md">
+              className="bg-blue-60 hover:bg-blue-700 transition text-white font-medium py-2 px-6 rounded-lg shadow-md">
               + New Monitor
             </Button>
           </div>
