@@ -1,6 +1,7 @@
 
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
+import { Button } from '../ui/button';
 
 const Navbar = async () => {
   return (
@@ -12,10 +13,10 @@ const Navbar = async () => {
             <Link className='hover:text-slate-400' href='/'>Home</Link>
             <Link className='hover:text-slate-400' href='/monitors'>Monitor</Link>
         </div>
-        <div>
+        <div className='flex gap-4'>
             <SignedOut>
-              <SignInButton />
-              <SignUpButton />
+              <Button className='rounded-xl font-extrabold bg-[#9290C3] text-[#070F2B] hover:bg-[#535C91] h-full'><SignInButton /> </Button>
+              <Button className='rounded-xl font-extrabold bg-[#9290C3] text-[#070F2B] hover:bg-[#535C91] h-full'><SignUpButton /> </Button>
             </SignedOut>
             <SignedIn>
               <UserButton />

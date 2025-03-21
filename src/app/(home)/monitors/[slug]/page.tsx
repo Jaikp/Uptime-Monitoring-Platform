@@ -48,7 +48,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
     }
 
     loadData();
-  }, [slug,edit]); // Add slug to the dependency array
+  }, [slug,edit]);
 
   const handleDelete = async ()=>{
     const response = await delMonitor(slug);
@@ -95,7 +95,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
             <div className="flex items-center gap-4">
                 <Button onClick={()=> setEdit(true)} className="bg-transparent border border-gray-500 hover:bg-gray-700 text-gray-300">Edit</Button>
                 
-                <button className="p-2 rounded-lg hover:bg-gray-700 transition">
+                <button onClick={()=> handleDelete()} className="p-2 rounded-lg hover:bg-gray-700 transition">
                     <Trash2 className="w-6 h-6 text-gray-400 hover:text-red-500 transition" />
                 </button>
             </div>
