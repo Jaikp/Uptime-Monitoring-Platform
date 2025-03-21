@@ -87,14 +87,14 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
         </div>
 
         {/* Last Checked Time */}
-        {values?.status === "UP" && (
+        
           <div className="mt-2 flex items-center gap-2 text-gray-300">
             <Clock size={16} />
-            <p className="text-sm">
-              Uptime: {time.Days}d {time.Hours}h {time.Minutes}m ago
-            </p>
+            
+            {values?.status === "UP" ? <p className="text-sm">Uptime: {time.Days}d {time.Hours}h {time.Minutes}m ago </p> : <p className="text-sm">Downtime: {time.Days}d {time.Hours}h {time.Minutes}m ago </p>}
+            
           </div>
-        )}
+        
 
         {/* Action Buttons */}
         <div className="mt-6 flex justify-between">
