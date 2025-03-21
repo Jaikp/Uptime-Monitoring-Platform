@@ -78,7 +78,7 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
       <div className="max-w-[600px] w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg p-6">
         {/* Status Header */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">https://endorserai.vercel.app</h1>
+          <h1 className="text-xl font-semibold">{values?.url}</h1>
           {values?.status === "UP" ? (
             <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full">UP</span>
           ) : (
