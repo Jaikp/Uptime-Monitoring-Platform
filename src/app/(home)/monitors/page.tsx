@@ -2,81 +2,81 @@
 import MonitorCard from '@/components/monitor/MonitorCard';
 import { useToast } from '@/hooks/use-toast';
 import { getMonitors } from '@/server-actions/getMonitors';
-
 import { monitorurl } from '@/types/monitorurl';
 import { useAuth } from '@clerk/nextjs';
-
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
-const page = () => {
-    
-    const [values, setValues] = useState<monitorurl[]>([]);
-    const [filter, setFilter] = useState<monitorurl[]>([]);
-    const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
-    const { toast } = useToast();
-    const router = useRouter()
-    useEffect(() => {
-      async function loadData (){
-        
-        const response = await getMonitors();
-        setValues(response);
-        setFilter(response);
-      }
-      loadData();
-    },[])
+const Page = () => {
 
-    const handleChange = (e : any)=>{
-        if(e.target.value === ""){
-            setFilter(values);
-            return;
-        }
-        const filterBySearch : monitorurl[] = values.filter( (item) => {
-            if(item.url.toLowerCase().includes(e.target.value.toLowerCase())){
-                return item;
-            }
-        })
-        setFilter(filterBySearch);
+      
+  const [values, setValues] = useState<monitorurl[]>([]);
+  const [filter, setFilter] = useState<monitorurl[]>([]);
+  const { isLoaded, isSignedIn } = useAuth();
+  const { toast } = useToast();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadData() {
+      const response = await getMonitors();
+      setValues(response);
+      setFilter(response);
     }
+    loadData();
+  }, []);
 
-    useEffect(() => {
-        if(!isSignedIn){
-            router.push('/');
-            toast({
-                variant: "destructive",
-                title: "you are not logged in",
-                description: "login to get access"
-              })
-        }
-    }, [isSignedIn])
-    
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setFilter(query ? values.filter(item => item.url.toLowerCase().includes(query)) : values);
+  };
+
+  useEffect(() => {
+    if (!isSignedIn) {
+        router.push('/');
+      toast({
+        variant: 'destructive',
+        title: 'You are not logged in',
+        description: 'Login to get access',
+      });
+    }
+  }, [isSignedIn]);
+
   return (
-    <div className='flex justify-center mt-10'>
-        <div className='max-w-[1040px] flex flex-col gap-10'>
-            <div className='flex justify-between gap-52'>
-                <div>
-                    <h1 className='text-white text-3xl'>How is it going, {}?</h1>
-                </div>
-                <div className='flex gap-4 items-center'>
-                    <div>
-                        <input onChange={(e)=>handleChange(e)} className='border border-gray-500 bg-[#202433] rounded px-2 text-white py-1' type="text" placeholder='search' name="fname"></input>
-                    </div>
-                    <div>
-                        <button onClick={()=> router.push('/monitors/new')} className='bg-[#9290C3] hover:bg-[#535C91] text-[#070F2B] py-1 px-7 rounded'>Create new</button>
-                    </div>
-                </div>
-            </div>
-
-            <div className='w-full border border-slate-600 flex flex-col gap-2 p-4 text-white rounded backdrop-blur-xl'>
-
-                {filter.map((value,index) => {
-                    return <MonitorCard key={index} url={value.url} status={value.status} id={value.id} frequency={value.frequency} userId={value.userId} createdAt={value.createdAt} updatedAt={value.updatedAt}/>
-                })}
-
-            </div>
+    <div className="flex justify-center mt-10 px-4">
+      <div className="max-w-4xl w-full flex flex-col gap-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-black text-3xl font-semibold">Welcome back!</h1>
+          <div className="flex gap-4">
+            <Input
+              onChange={handleChange}
+              className="border border-gray-500 bg-white rounded-lg px-3 text-white py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="text"
+              placeholder="Search..."
+            />
+            <Button 
+              onClick={() => router.push('/monitors/new')} 
+              className="bg-[#6366F1] hover:bg-[#4F46E5] text-white font-medium py-2 px-6 rounded-lg shadow-md">
+              + New Monitor
+            </Button>
+          </div>
         </div>
+        <div className="flex flex-col gap-2 w-full border border-white bg-white rounded-lg p-5 text-white shadow-lg">
+          {filter.length > 0 ? (
+            filter.map((value, index) => (
+              <MonitorCard 
+                key={index} 
+                {...value} 
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-400">No monitors found.</p>
+          )}
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;

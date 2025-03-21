@@ -6,11 +6,11 @@ import { delMonitor } from "@/server-actions/delMonitor";
 import { getMonitorData } from "@/server-actions/getMonitorData";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Clock } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { isLoaded, isSignedIn, userId, sessionId, getToken } = useAuth()
+  const { isLoaded, isSignedIn, userId } = useAuth();
   const router = useRouter();
   const { slug } = React.use(params); // Unwrap the params Promise
 
@@ -31,7 +31,6 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
   useEffect(() => {
     async function loadData() {
       const response = await getMonitorData(slug);
-      console.log(response);
       setValues(response);
       setLoading(false);
 
@@ -48,69 +47,65 @@ export default function Page({ params }: { params: Promise<{ slug: string }> }) 
     }
 
     loadData();
-  }, [slug,edit]);
+  }, [slug, edit]);
 
-  const handleDelete = async ()=>{
-    const response = await delMonitor(slug);
-    router.push("/monitors")
-  }
+  const handleDelete = async () => {
+    await delMonitor(slug);
+    router.push("/monitors");
+  };
 
   // Redirect if unauthenticated
-  if (!isSignedIn) {
-    router.push("/");
-    return null; // Stop rendering after redirect
-  }
+  // if (!isSignedIn) {
+  //   router.push("/");
+  //   return null;
+  // }
 
   // Show loading state
-  if (loading || !isLoaded) {
-    return (
-      <div className="w-screen h-screen flex justify-center items-center animate-pulse">
-        <h1 className="text-2xl text-white">Loading...</h1>
-      </div>
-    );
-  }
+  // if (loading || !isLoaded) {
+  //   return (
+  //     <div className="w-screen h-screen flex justify-center items-center animate-pulse">
+  //       <h1 className="text-2xl text-white">Loading...</h1>
+  //     </div>
+  //   );
+  // }
 
-  if(edit){
-    return(
-        <EditMonitor id={slug} setEdit={setEdit} url={values?.url} />
-    )
-  }
+  // if (edit) {
+  //   return <EditMonitor id={slug} setEdit={setEdit} url={values?.url} />;
+  // }
 
   return (
     <div className="flex justify-center mt-10 text-white">
-      <div className="max-w-[1040px] flex flex-col gap-10 w-full">
-        <div className="border border-slate-500 shadow-md justify-between p-4 flex items-center">
-            <div className="flex items-center gap-5">
-                {values?.status === "UP" ? (
-                <div className="size-4 bg-green-500 rounded-full">
-                    <div className="size-4 bg-green-500 rounded-full animate-ping"></div>
-                </div>
-                ) : (
-                <div className="size-4 bg-red-600 rounded-full">
-                    <div className="size-4 bg-red-600 rounded-full animate-ping"></div>
-                </div>
-                )}
-                <h1>{values?.url}</h1>
-            </div>
-            <div className="flex items-center gap-4">
-                <Button onClick={()=> setEdit(true)} className="bg-transparent border border-gray-500 hover:bg-gray-700 text-gray-300">Edit</Button>
-                
-                <button onClick={()=> handleDelete()} className="p-2 rounded-lg hover:bg-gray-700 transition">
-                    <Trash2 className="w-6 h-6 text-gray-400 hover:text-red-500 transition" />
-                </button>
-            </div>
+      <div className="max-w-[600px] w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg p-6">
+        {/* Status Header */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold">https://endorserai.vercel.app</h1>
+          {values?.status === "UP" ? (
+            <span className="bg-green-600 text-white text-xs px-3 py-1 rounded-full">UP</span>
+          ) : (
+            <span className="bg-red-600 text-white text-xs px-3 py-1 rounded-full">DOWN</span>
+          )}
+        </div>
+
+        {/* Last Checked Time */}
+        {values?.status === "UP" && (
+          <div className="mt-2 flex items-center gap-2 text-gray-300">
+            <Clock size={16} />
+            <p className="text-sm">
+              Uptime: {time.Days}d {time.Hours}h {time.Minutes}m ago
+            </p>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="mt-6 flex justify-between">
+          <Button onClick={() => setEdit(true)} className="bg-blue-500 hover:bg-blue-600">
+            Edit
+          </Button>
+          <button onClick={handleDelete} className="bg-transparent p-2 rounded-lg hover:bg-gray-800 transition">
+            <Trash2 className="w-6 h-6 text-gray-400 hover:text-red-500 transition" />
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-
-// {values?.status === "UP" ? (
-//     <p>
-//       <span className="text-md">Uptime</span>: {time.Days} Days{" "}
-//       {time.Hours} Hours {time.Minutes} Minutes
-//     </p>
-//   ) : (
-//     <p>Down</p>
-//   )}
