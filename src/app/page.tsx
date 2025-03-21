@@ -38,7 +38,6 @@ export default function Home() {
 
   return (
     <div>
-   {/* Hero Section */}
    <div className="relative bg-white dark:bg-gray-800 overflow-hidden">
    <div className="max-w-7xl mx-auto">
      <div className="relative z-10 pb-8 bg-white dark:bg-gray-800 sm:pb-16 md:pb-20 lg:pb-28 xl:pb-32">
@@ -49,7 +48,8 @@ export default function Home() {
              <span className="block text-blue-600 dark:text-blue-400">With Confidence</span>
            </h1>
            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-             Get real-time insights into your service's uptime. Monitor, alert, and respond to incidents before they impact your users.
+           Get real-time insights into your service&apos;s uptime. Monitor, alert, and respond to incidents before they impact your users.
+
            </p>
            <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
              <div className="rounded-md shadow">
@@ -64,7 +64,6 @@ export default function Home() {
    </div>
  </div>
 
- {/* Features Section */}
  <div id="features" className="py-12 bg-white dark:bg-gray-800">
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      <div className="text-center">
