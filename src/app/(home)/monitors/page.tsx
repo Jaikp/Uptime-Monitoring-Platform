@@ -41,7 +41,7 @@ const Page = () => {
         description: 'Login to get access',
       });
     }
-  }, [isSignedIn]);
+  }, []);
 
   return (
     <div className="flex justify-center mt-10 px-4">
