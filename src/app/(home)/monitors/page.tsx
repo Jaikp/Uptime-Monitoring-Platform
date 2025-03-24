@@ -51,7 +51,7 @@ const Page = () => {
           <div className="flex gap-4">
             <Input
               onChange={handleChange}
-              className="border border-gray-500 bg-white rounded-lg px-3 text-white py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-500 bg-white rounded-lg px-3 text-black py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="Search..."
             />
